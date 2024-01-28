@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteIt for Honey</title>
+    <style>
+        /* ... (same styles as before) */
+        #messageInput {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        #sendMessageBtn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        #sendMessageBtn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NoteIt for Honey</h1>
+        <input type="text" id="noteInput" placeholder="Add a note...">
+        <button id="addNoteBtn">Add Note</button>
+        <div id="noteList"></div>
+        <hr>
+        <input type="text" id="messageInput" placeholder="Send a sweet message...">
+        <button id="sendMessageBtn">Send Message</button>
+        <div id="messageList"></div>
+    </div>
+
+    <script>
+        // ... (same existing JavaScript code)
+
+        // Add event listener to the "Send Message" button
+        document.getElementById('sendMessageBtn').addEventListener('click', function () {
+            // Get the message input value
+            const messageInput = document.getElementById('messageInput');
+            const messageText = messageInput.value.trim();
+
+            if (messageText !== '') {
+                // Save message to localStorage
+                saveMessage(messageText);
+                // Clear the input field
+                messageInput.value = '';
+                // Update message list
+                updateMessageList();
+            }
+        });
+
+        // Function to save message to localStorage
+        function saveMessage(messageText) {
+            // Retrieve existing messages from localStorage
+            const messages = getMessages();
+
+            // Add the new message to the array
+            messages.push(messageText);
+
+            // Save the updated messages back to localStorage
+            localStorage.setItem('messages', JSON.stringify(messages));
+        }
+
+        // Function to get messages from localStorage
+        function getMessages() {
+            // Retrieve messages from localStorage
+            return JSON.parse(localStorage.getItem('messages')) || [];
+        }
+
+        // Function to update message list on the page
+        function updateMessageList() {
+            const messageListContainer = document.getElementById('messageList');
+            messageListContainer.innerHTML = '';
+
+            // Retrieve messages
+            const messages = getMessages();
+
+            // Render messages on the page
+            messages.forEach(function (message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'note'; // Reusing the 'note' style
+                messageDiv.textContent = message;
+                messageListContainer.appendChild(messageDiv);
+            });
+        }
+    </script>
+</body>
+</html>
